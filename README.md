@@ -1,9 +1,9 @@
-##Overview
+# Overview
 
 This repository contains the c code for the paper Cell-type-specific DMR Detection]{Detection of Cell-type-specific Differentially Methylated Regions
 in Epigenome-Wide Association Studies.
 
-##Introduction
+# Introduction
 
 Epigenome-wide association studies (EWAS) aim to identify the
 associations between the DNA methylation levels of (CpG) sites
