@@ -13,9 +13,9 @@ and phenotypes of interest. EWAS data is aggregated from mixed cell types. It is
 
 The input should include:
 
-$X$: A $n*Q$ matrix where $n$ is the number of sample size and Q is the number of covariates
+$X$: A $n$ by $Q$ matrix where $n$ is the number of sample size and Q is the number of covariates
 
-$O$: A $n*G$ matrix where $G$ is the number of CpG sites
+$O$: A $n$ by $G$ matrix where $G$ is the number of CpG sites
 
 $t$: A vector of length $G$ containing the genomic locations of the CpG sites
 
@@ -31,7 +31,7 @@ $K$: The number of cell types
 
 The output includes:
 
-$pvalue$: A $K*Q*G$ array containing the p-values estimated from the model
+$pvalue$: A $K$ by $Q$ by $G$ array containing the p-values estimated from the model
 
 $prop$: The estimated cellular proportions
 
