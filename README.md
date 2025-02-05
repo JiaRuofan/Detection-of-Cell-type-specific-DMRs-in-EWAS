@@ -29,8 +29,13 @@ $K$: The number of cell types
 
 The output includes:
 
+$beta$: A $K$ by $Q$ by $G$ array containing the estimated effect size
+
 $pvalue$: A $K$ by $Q$ by $G$ array containing the p-values estimated from the model
 
 $prop$: The estimated cellular proportions
+
+$M$: An array with dim $K$ by $G$ by $n$ containing the cell-type-specific profiles 
+
 
 
