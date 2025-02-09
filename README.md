@@ -1,6 +1,6 @@
 # Overview
 
-This repository contains the source c code for the paper Cell-type-specific DMR Detection]{Detection of Cell-type-specific Differentially Methylated Regions
+This repository contains the source c code for the paper Detection of Cell-type-specific Differentially Methylated Regions
 in Epigenome-Wide Association Studies. The code will later be packed into a R function
 
 # Introduction
