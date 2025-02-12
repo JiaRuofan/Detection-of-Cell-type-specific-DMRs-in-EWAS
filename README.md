@@ -17,13 +17,9 @@ $O$: A $n$ by $G$ matrix where $G$ is the number of CpG sites
 
 $t$: A vector of length $G$ containing the genomic locations of the CpG sites
 
-$nb$: The number of blocks
-
-$block_{vec}$: A vector of length $nb$ containing the number of CpG sites in each block
-
-$df$: A vector of length $nb$ containing the degree of freedom of B-splines in each block
-
 $K$: The number of cell types
+
+$FWER$: the FWER 
 
 # Output
 
@@ -37,5 +33,5 @@ $prop$: The estimated cellular proportions
 
 $M$: An array with dim $K$ by $G$ by $n$ containing the cell-type-specific profiles 
 
-
+$DMRs$: A list with length $K$ containing the DMRs detected for each cell type
 
