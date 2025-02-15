@@ -153,7 +153,7 @@ SEXP FineDMRRcallC(SEXP args) {
     {
       for(int i=0;i<n;i++)
       {
-        O[j][i][l]=REAL(Omat_r_dim)[(coun-1+j)*n+l*n+i];
+        O[j][i][l]=REAL(Omat_r)[(coun-1+j)*n+l*n+i];
       }
     }
     
