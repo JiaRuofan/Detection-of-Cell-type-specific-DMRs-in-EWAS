@@ -15,7 +15,7 @@ Ruofan Jia 1155165249@link.cuhk.edu.hk
 
 Before using the FineDMR function, users should install the [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/). 
 
-The following packages are also needed in order to use FineDMR: splines, quadprog
+The following R packages are also needed in order to use FineDMR: splines, quadprog
 
 # Input
 
