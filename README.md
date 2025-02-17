@@ -9,7 +9,7 @@ DNA methylation at cytosine-phosphate-guanine (CpG) sites is one of the most imp
 
 # System Requirements
 
-Before using the FineDMR function, users should install the [GNU Scientific Library (GSL)] (https://www.gnu.org/software/gsl/). 
+Before using the FineDMR function, users should install the [GNU Scientific Library (GSL)](https://www.gnu.org/software/gsl/). 
 
 The following packages are also needed in order to use FineDMR: splines, quadprog
 
