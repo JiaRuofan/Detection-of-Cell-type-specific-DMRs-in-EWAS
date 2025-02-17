@@ -569,52 +569,7 @@ void gsl_matrix_trans(gsl_matrix *a,gsl_matrix *b)
   }
 }
 
-void IterativeSolver(gsl_spmatrix *A,gsl_vector *f,gsl_vector *u,int n){
-  /* convert to compressed column format */
-  gsl_spmatrix *C;
-  C = gsl_spmatrix_ccs(A);
-  
-  /* now solve the system with the GMRES iterative solver */
-  {
-    const double tol = 1.0e-6;  /* solution relative tolerance */
-  const size_t max_iter = 10; /* maximum iterations */
-  const gsl_splinalg_itersolve_type *T = gsl_splinalg_itersolve_gmres;
-  gsl_splinalg_itersolve *work =
-    gsl_splinalg_itersolve_alloc(T, n, 0);
-  size_t iter = 0;
-  double residual;
-  int status;
-  
-  /* initial guess u = 0 */
-  gsl_vector_set_zero(u);
-  
-  /* solve the system A u = f */
-  do
-  {
-    status = gsl_splinalg_itersolve_iterate(C, f, tol, u, work);
-    
-    /* print out residual norm ||A*u - f|| */
-    residual = gsl_splinalg_itersolve_normr(work);
-    //fprintf(stderr, "iter %zu residual = %.12e\n", iter, residual);
-    
-    //if (status == GSL_SUCCESS)
-    // fprintf(stderr, "Converged\n");
-  }
-  while (status == GSL_CONTINUE && ++iter < max_iter);
-  
-  /* output solution */
-  //for (i = 0; i < n; ++i)
-  //  {
-  //    double xi = (i + 1) * h;
-  //    double u_exact = sin(M_PI * xi);
-  //   double u_gsl = gsl_vector_get(u, i);
-  
-  //   printf("%f %.12e %.12e\n", xi, u_gsl, u_exact);
-  //  }
-  
-  gsl_splinalg_itersolve_free(work);
-  }
-}
+
 
 double gsl_VMV(gsl_vector *b,gsl_matrix *a,gsl_vector *c,int row,int col)
 {
@@ -898,18 +853,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
     }
     
     
-    FILE * pFile1;
-    const char *pFileName1="XCB.txt";
-    pFile1 = fopen(pFileName1, "w");
-    for (int ty = 0; ty < nblock; ty++){
-      for (int l = 0; l < n; l++){
-        for (int j = 0; j < type; j++)
-        {
-          
-          for (int i = 0; i < block[ty]; i++){
-            fprintf(pFile1,"%.3f\n", XCB[ty][l][j][i]);
-          }}}}
-    fclose(pFile1);
     
     
     
@@ -999,7 +942,7 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
         gsl_vector_set_zero(Emu_sub);
         gsl_vector_set_zero(Emu_sub_nor);
         gsl_vector_set_zero(Emu_sub1);
-        //sigma_vec[i]=0;
+        
         
         
         
@@ -1008,14 +951,10 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
             
             gsl_matrix_set(Pi, j, j*type+k, Pest[i][k]);
             gsl_matrix_set(Pi_T,  j*type+k,j, Pest[i][k]);
-            // if (abs(Pest[i][k])>1){
-            //   printf("%lf\n",Pest[i][k]);
-            // }
-            //printf("%lf\n",gsl_matrix_get(Pi_T,j*type+k,j));
+            
           }
         }
         
-        //gsl_matrix_trans(Pi,Pi_T);
         
         
         gsl_matrix_mul(Pi_T, BLOCK, Pi_TB);
@@ -1073,16 +1012,10 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
         
         
         
-        //   for (int j2=1100;j2<1200;j2++){
-        //    printf("%lf\n",gsl_vector_get(Emu_sub,j2));
-        
-        //  }
-        
         for (int j1=0;j1<(type);j1++){
           for (int j2=0;j2<block[b];j2++){
             Emu[b][i][type*j2+j1]=gsl_vector_get(Emu_sub_nor,type*j2+j1);
-            //printf("%lf\n",gsl_vector_get(Emu_sub_nor,type*j2+j1));
-            //printf("%lf\n",gsl_vector_get(Emu_sub_nor,type*j2+j1));
+            
           }}
         
         
@@ -1108,7 +1041,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
             
             gsl_matrix_mul(BLOCK, Sigma_tilde, BS);
             Dmat[i][m1][m2]= Dmat[i][m1][m2]+gsl_matrix_trace(BS);
-            //printf("%lf\n",gsl_matrix_trace(BS));
             for (int i1=0; i1<block[b]; i1++){
               
               gsl_vector_set(mu_k1, i1, Emu[b][i][i1*type+m1]);
@@ -1174,7 +1106,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
             gsl_vector_set(Bmu_k2, j1, vv[i]);
           }
           
-          //gsl_matrixvector_mul(BLOCK,mu_k1,Bmu_k2,block[b],block[b]);
           
           for (int i1=0; i1<block[b]; i1++){
             
@@ -1182,7 +1113,7 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
             
           }
           
-          //printf("%lf\n",d[i][m]);
+          
         }
         
         
@@ -1215,7 +1146,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
     
     Ll=0;
     for (int b=0;b<nblock;b++){
-      //printf("%lf\n",Ll);
       gsl_matrix *BLOCK = gsl_matrix_alloc(block[b],block[b]);
       gsl_vector *x_sub = gsl_vector_alloc(block[b]);
       
@@ -1261,7 +1191,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
     
     Ll_old=0;
     for (int b=0;b<nblock;b++){
-      //printf("%lf\n",Ll);
       gsl_matrix *BLOCK = gsl_matrix_alloc(block[b],block[b]);
       gsl_vector *x_sub = gsl_vector_alloc(block[b]);
       gsl_matrix_set_zero(BLOCK);
@@ -1352,7 +1281,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
     }
     
     
-    printf("%lf\n",Msigma);
     
     for (int j=0;j<nblock;j++){
       
@@ -1384,7 +1312,7 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
           
           for (int k=0;k<type;k++){
             Msigma=Msigma+XCB[l][i][k][j]*XCB[l][i][k][j]-2*Emu[l][i][j*type+k]*XCB[l][i][k][j]+Emu[l][i][j*type+k]*Emu[l][i][j*type+k];
-            //printf("%lf\n",XCB[l][i][k][j]*XCB[l][i][k][j]-2*Emu[l][i][j*type+k]*XCB[l][i][k][j]);
+            
           }
         }}}
     
@@ -1399,13 +1327,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
     diff2=1;
     iter=0;
     
-    //Mw=5;
-    //Mv=0.03;
-    // for (int i=0;i<3;i++){
-    //  for (int j=0;j<3;j++){
-    //      printf("%lf\n",ESigma1[i][j]);
-    //    }
-    //  }
     
     batch=it%10;
     
@@ -1665,7 +1586,7 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
         gsl_vector_free(u);
         gsl_vector_free(Su);
         gsl_matrix_free(PSP);
-        //printf("%d\n",i);
+        
       }
       
       
@@ -1677,32 +1598,23 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
       }
       dldw=dldw-1/n_batch*(alpha_w+1)/Mw+n_batch*alpha_w/mu_w/Mw/Mw;
       dldv=dldv-1/n_batch*1/Mv*(1+(log(Mv)-mu_v)/sigma_v);
-      printf("%d\n",iter);
-      printf("%lf\n",dldw);
-      printf("%lf\n",dldv);
+      
       stepsize_w=(Mw-Mw_old)/(dldw-dldw_old);
       stepsize_v=(Mv-Mv_old)/(dldv-dldv_old);
-      //    printf("%d\n",iter);
-      //  printf("%lf\n",Mw);
-      //   printf("%lf\n",Mv);
-      //printf("%lf\n",dldw);
-      //printf("%lf\n",dldv);
+      
       Mv_old=Mv;
       Mw_old=Mw;
       Mw=Mw-stepsize_w*dldw;
       Mv=Mv-stepsize_v*dldv;
-      // Mw=Mw+stepsize_w*dldw;
-      // Mv=Mv+stepsize_v*dldv;
+      
       dldw_old=dldw;
       dldv_old=dldv;
       if (Mw>100){Mw=Mw_old;}
       if (Mw<0){Mw=Mw_old;}
-      //if (Mw>20){Mw=2;}
-      //if (Mv>0.5){Mv=Mv_old;}
+      
       if (Mv<0){Mv=Mv_old;}
       if (Mv>1){Mv=Mv_old;break;}
-      //if (Mw>1000){Mv=Mv_old;Mw=100;break;}
-      //if (Mv>0.1){Mv=0.00001;break;}
+      
       if(fabs(dldw)<thr && fabs(dldv)<thr){
         break;
       }
@@ -1872,7 +1784,6 @@ void FineDMR(int nblock, int *block, int *nbasis, int Q, int G, int n, int type,
           }
           row=nbasis[i]*(q+1)+ty*nbasis[i]*Q-1;
           var_trans=var_trans+pow(B[i][j][nbasis[i]-1],2)*XWX[i][row][row];
-          //printf("%lf\n",var_trans);
           beta_sd[i][ty][j][q]=sqrt(var_trans);
           beta_z[i][ty][j][q]=beta_est[i][ty][j][q]/beta_sd[i][ty][j][q];
         }
