@@ -135,3 +135,21 @@ FineDMR<-function(O_mat, X, t, df_prop=1/5, K){
   return(res_list)
   
 }
+
+
+##################Detect the DMRs
+
+DMR_detect<-function(sequ){
+  
+  res<-list()
+  i<-1
+  DMR<-sequ[i]
+  while(i<length(sequ)){
+    if (sequ[i+1]-sequ[i]>1){
+      res<-c(res,list(DMR))
+      DMR<-sequ[i+1]
+    }else{DMR<-c(DMR,sequ[i+1])}
+    i<-i+1
+  }
+  return(res)
+}
