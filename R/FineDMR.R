@@ -74,7 +74,7 @@ FineDMR<-function(O_mat, X, t, df_prop=1/5, K){
   
   
   block_list<-diff(c(psearch(1,50,200,as.numeric(t)),length(t)+1))
-  nblock<-length(block)
+  nblock<-length(block_list)
   
   nbasis_sub_list<-list()
   B_sub_list<-list()
