@@ -116,7 +116,7 @@ FineDMR<-function(O_mat, X, t, df_prop=1/5, K){
   
   X<-cbind(rep(1,dim(as.data.frame(X))[1]),X)
   
-  system("R CMD SHLIB FineDMR.c -lgsl -lgslcblas")
+  system("R CMD SHLIB FineDMR.c -lgsl -lgslcblas -fopenmp")
   dyn.load("FineDMR.so")
   
   #B_r;BTBIBT_r
@@ -131,7 +131,7 @@ FineDMR<-function(O_mat, X, t, df_prop=1/5, K){
   
   
   res_list <- FineDMRRcallC(O_mat, X, P_t, t, nblock, block_list, nbasis, K)
-  
+  dyn.unload("FineDMR.so")
   return(res_list)
   
 }
