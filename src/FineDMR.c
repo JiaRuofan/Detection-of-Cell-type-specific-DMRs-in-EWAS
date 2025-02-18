@@ -133,27 +133,29 @@ SEXP FineDMRRcallC(SEXP args) {
   Mv=REAL(v_init)[0];
   
   
-  int coun=0;
+   int coun=0;
   
   for(int i=0;i<nblock;i++)
   {
-    coun=coun+block[i];
+    
     for(int j=0;j<block[i];j++)
     {
       
-      t[i][j]=INTEGER(t_r)[coun-1+j];
+      t[i][j]=REAL(t_r)[coun];
+      
     }
     
   }
   
   coun=0;
   for (int j=0;j<(nblock);j++){
-    coun=coun+block[j];
+    
     for(int l=0;l<block[j];l++)
     {
       for(int i=0;i<n;i++)
       {
-        O[j][i][l]=REAL(Omat_r)[(coun-1+j)*n+l*n+i];
+        O[j][i][l]=REAL(Omat_r)[coun];
+        coun=coun+1;
       }
     }
     
@@ -190,7 +192,7 @@ SEXP FineDMRRcallC(SEXP args) {
     {
       for(int j=0;j<block[l];j++)
       {
-        ThetaHat[l][i][j]=REAL(BTBIBT)[i*Q+j];
+        ThetaHat[l][i][j]=REAL(BTBIBT)[coun];
         coun=coun+1;
       }
       
