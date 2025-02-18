@@ -142,7 +142,7 @@ SEXP FineDMRRcallC(SEXP args) {
     {
       
       t[i][j]=REAL(t_r)[coun];
-      
+      coun=coun+1;
     }
     
   }
