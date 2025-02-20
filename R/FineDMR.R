@@ -119,7 +119,7 @@ FineDMR<-function(O_mat, X, t, df_prop=1/5, K){
   system("R CMD SHLIB FineDMR.c -lgsl -lgslcblas -fopenmp")
   dyn.load("FineDMR.so")
   
-  #B_r;BTBIBT_r
+
   FineDMRRcallC <- function(O_mat, X, P_t, t, nblock, block_list, nbasis, K, n_batch=50, num_iter=1, sigma2_init=0.01, w_init=20, v_init=0.0001){
     args <- list("P_init"=as.numeric(P_t), "Omat_r"=as.numeric(O_mat), "B_r"=as.numeric(B_r), 'BTBIBT'=as.numeric(BTBIBT_r),
                  "Omat_r_dim"=as.integer(dim(O_mat)), "X_r"=as.numeric(X), "X_r_dim"=as.integer(dim(X)), "num_iter" = as.integer(num_iter),
@@ -128,6 +128,18 @@ FineDMR<-function(O_mat, X, t, df_prop=1/5, K){
     res_list <- .Call("FineDMRRcallC", args)		
     return(res_list)
   }
+    pvalues<-array(0,dim=c(K,dim(X)[2],dim(O_mat)[2]))
+  
+  for (k in 1:K){
+    for (q in 1:dim(X)[2]){
+      for (j in 1:dim(O_mat)[2]){
+        pvalues[k,q,j]<-min(2*(1-pnorm(res_list$`z value`[k,q,j])),2*pnorm(res_list$`z value`[k,q,j]))
+      }
+    }
+  }
+  
+  res_list[[5]]<-pvalues
+  names(res_list)[5] <- "p values"
   
   
   res_list <- FineDMRRcallC(O_mat, X, P_t, t, nblock, block_list, nbasis, K)
@@ -153,3 +165,77 @@ DMR_detect<-function(sequ){
   }
   return(res)
 }
+
+#####################Adjust the p values, input should be the array of p values returned by FineDMR
+padjust<-function(p_array,method='bonferroni'){
+  
+  if (is.na(dim(p_array)[3])){
+    K<-dim(p_array)[1]
+    G<-dim(p_array)[2]
+    Q<-1
+    p<-c()
+    
+    for (k in 1:K){
+
+        p<-c(p,p_array[k,])
+    
+    }
+    
+    n<-length(p)
+    o<-order(p)
+    paftero<-p[o]
+    pad<-p.adjust(paftero,method=method)
+    p_res<-c()
+    for (i in 1:n){
+      p_res[o[i]]=pad[i]
+    }
+    
+    p_adjust_array<-array(0,dim=c(dim(p_array)[1],1,dim(p_array)[2]))
+    
+    
+    for (k in 1:K){
+      
+        p_adjust_array[k,1,]<-p_res[((k-1)*G+1):((k-1)*G+G)]
+      
+    }
+  }else{
+    
+    K<-dim(p_array)[1]
+    Q<-dim(p_array)[2]
+    G<-dim(p_array)[3]
+    
+    p<-c()
+    
+    for (k in 1:K){
+      for (q in 1:Q){
+        p<-c(p,p_array[k,q,])
+      }
+    }
+    
+    n<-length(p)
+    o<-order(p)
+    paftero<-p[o]
+    pad<-p.adjust(paftero,method=method)
+    p_res<-c()
+    for (i in 1:n){
+      p_res[o[i]]=pad[i]
+    }
+    
+    p_adjust_array<-array(0,dim=c(dim(p_array)[1],dim(p_array)[2],dim(p_array)[3]))
+    
+    
+    for (k in 1:K){
+      for (q in 1:Q){
+        p_adjust_array[k,q,]<-p_res[((k-1)*(Q)*G+(q-1)*G+1):((k-1)*(Q)*G+(q-1)*G+G)]
+      }
+    }
+  }
+
+  
+
+  
+  return(p_adjust_array)
+}
+
+
+
