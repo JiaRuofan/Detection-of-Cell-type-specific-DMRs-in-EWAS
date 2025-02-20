@@ -3,8 +3,10 @@ library(splines)
 
 source('FineDMR.R')
 
-O<-read.table('O.txt')
-X<-read.table('X.txt')
+#sample size n=100; number of CpG sites G=1000; number of covariates Q=1
+
+O<-read.table('O.txt')#A n by G matrix with G observed DNA methylation levels for n samples
+X<-read.table('X.txt')#A n by Q matrix with covariates for n samples 
 
 
 #########Run the FineDMR algorithm
@@ -13,7 +15,7 @@ FD_res<-FineDMR(O,X,tj,K=6)
 #########Adjust the p values for the covariates X with Bonferroni method
 p_array_adjust<-padjust(FD_res$`p values`[,2,],method='bonferroni')
 
-#########Detect the DMRs for cell type 1-6
+#########Detect the DMRs in cell type 1-6
 K<-6
 
 for (k in 1:K){
