@@ -17,8 +17,8 @@ p_array_adjust<-padjust(FD_res$`p values`[,2,],method='bonferroni')
 
 #########Detect the DMRs in cell type 1-6
 K<-6
-
+FWER<-0.01
 for (k in 1:K){
 
-  print(DMR_detect(p_array_adjust[k,]<=0.01))
+  print(DMR_detect(p_array_adjust[k,]<=FWER))
 }
