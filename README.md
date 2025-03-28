@@ -45,3 +45,7 @@ $M$: An array with dim $K$ by $G$ by $n$ containing the cell-type-specific profi
 
 $DMRs$: A list with length $K$ containing the DMRs detected for each cell type
 
+# Data availability
+One can access the simulation data via the [Onedrive](https://mycuhk-my.sharepoint.com/:f:/g/personal/1155165249_link_cuhk_edu_hk/EpoAC32GLP1Hm9lQNvxaCe8BzHwd5Si9N64tHmTOhdvQmA?e=gA6nrT) with PW FineDMR2025.
+
+
