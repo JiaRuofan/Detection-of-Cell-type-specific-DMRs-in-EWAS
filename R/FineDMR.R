@@ -261,5 +261,19 @@ p1+scale_y_continuous(breaks=seq(1,K,1))+geom_tile()+scale_fill_gradient2(limits
 }
 
 
-
+FineDMR_manhatten<-function(P,thr,Location,clas){
+options(scipen= 999 )
+pt<--log10(P)
+dat<-data.frame(Location,pt,clas)
+p1 <- ggplot(dat, aes(x=Location, y=pt)) +
+  geom_point(aes(color=as.factor(clas)), alpha=0.8, size=1.5) +
+  scale_color_manual(values = rep(c("black", "coral"), 22 ))+ 
+  geom_hline(yintercept = -log10(thr), color = 'skyblue',size = 2, linetype = "twodash" )+ 
+  theme_bw() + 
+  theme(plot.title = element_text(size=20,hjust = 0.5,face='bold'),
+        legend.position="none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()
+  )+theme(axis.text=element_text(size=20,face = "bold"),axis.title=element_text(size=20,face = "bold"))+labs(x = "", y = expression(-log[10](p)))
+}
 
