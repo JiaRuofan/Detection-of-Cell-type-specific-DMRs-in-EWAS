@@ -82,7 +82,7 @@ for (k in 1:K){
 ```
 In order to get the heatmap shown as following, one can run the following codes with ggplots and ggsci required:
 
- ![heatmap]([https://github.com/JiaRuofan/Detection-of-Cell-type-specific-DMRs-in-EWAS/blob/main/heatmap.png?raw=true](https://github.com/JiaRuofan/Detection-of-Cell-type-specific-DMRs-in-EWAS/blob/main/heatmap.png?raw=true))
+ ![heatmap](https://github.com/JiaRuofan/Detection-of-Cell-type-specific-DMRs-in-EWAS/blob/main/simu_heatmap.png?raw=true)
 
 ```
 library(ggplot2)
