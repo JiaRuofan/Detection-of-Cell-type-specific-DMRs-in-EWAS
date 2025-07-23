@@ -1506,7 +1506,7 @@ SEXP FineDMRRcallC(SEXP args) {
   for (int i=0;i<nblock;i++){
     
     for (int j=0;j<block[i];j++){    
-      for (int q=1;q<Q;q++){
+      for (int q=0;q<Q;q++){
         for (int ty=0;ty<type;ty++){
           
           REAL(res_beta_c)[coun] = beta_est[i][ty][j][q];
