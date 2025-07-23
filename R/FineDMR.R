@@ -261,10 +261,11 @@ p1+scale_y_continuous(breaks=seq(1,K,1))+geom_tile()+scale_fill_gradient2(limits
 }
 
 
-FineDMR_manhatten<-function(P,thr,Location,clas){
+FineDMR_manhatten<-function(P,Location,clas,FWER,G,K,Q){
 options(scipen= 999 )
 pt<--log10(P)
 dat<-data.frame(Location,pt,clas)
+thr<-FWER/K/Q/G
 p1 <- ggplot(dat, aes(x=Location, y=pt)) +
   geom_point(aes(color=as.factor(clas)), alpha=0.8, size=1.5) +
   scale_color_manual(values = rep(c("black", "coral"), 22 ))+ 
