@@ -246,7 +246,7 @@ Effect<-c()
 CellType<-c()
 
 for (k in 1:K){
-Effect<-c(Effect,FD_res$`beta`[k,1,])
+Effect<-c(Effect,beta[k,])
 CellType<-c(CellType,rep(k,G)
 }
 
