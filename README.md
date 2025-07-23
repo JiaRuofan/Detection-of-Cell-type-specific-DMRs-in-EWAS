@@ -48,4 +48,36 @@ $DMRs$: A list with length $K$ containing the DMRs detected for each cell type
 # Data availability
 One can access the simulation data via the [Onedrive](https://mycuhk-my.sharepoint.com/:f:/g/personal/1155165249_link_cuhk_edu_hk/EpoAC32GLP1Hm9lQNvxaCe8BzHwd5Si9N64tHmTOhdvQmA?e=gA6nrT) with PW FineDMR2025.
 
+# Example
+
+Below is an example showing how to use FineDMR to analyze the data in the alternative case of the simulation study when $n=300$.
+
+```
+#Input: sample size n=300; number of CpG sites G=10000; number of covariates Q=1
+load('O.Rdata')#The observed methylation data
+load('X.Rdata')#The phenotypes
+load('t.Rdata')#Genomic locations
+
+# Load required dependencies
+library(quadprog)
+library(splines)
+
+source('FineDMR.R')
+
+#Run the FineDMR algorithm
+FD_res<-FineDMR(O,X,t,K=6) 
+
+#Adjust the p values for the covariates X with Bonferroni method
+p_array_adjust<-padjust(FD_res$`p values`[,2,],method='bonferroni')
+
+#Detect the DMRs in cell type 1-6
+K<-6
+FWER<-0.01
+for (k in 1:K){
+
+  print(DMR_detect(p_array_adjust[k,]<=FWER))
+}
+
+
+```
 
