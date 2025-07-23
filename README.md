@@ -90,21 +90,6 @@ library(ggsci)
 
 G<-dim(O)[2]
 
-Effect<-c()
-CellType<-c()
-
-for (k in 1:K){
-Effect<-c(Effect,FD_res$`beta`[k,1,])
-CellType<-c(CellType,rep(k,G)
-}
-
-CpG_Site<-rep(1:G,6)
-
-da<-data.frame(CellType,CpG_Site,Effect)
-allbeta_range<-range(Effect)
-
-p1<-ggplot(da,aes(x=CpG_Site,y=CellType,fill=Effect))
-#p1+scale_x_continuous(breaks=seq(1,6,1))+geom_raster()+scale_fill_gradient2(limits=c(floor(allbeta),ceiling(allbeta)))+theme_classic()
-p1+scale_y_continuous(breaks=seq(1,K,1))+geom_tile()+scale_fill_gradient2(limits=c(allbeta_range[1],allbeta_range[2]))+theme_classic()+theme(axis.text=element_text(size=40),legend.text=element_text(size=40),axis.title.x=element_text(size=40),axis.title.y=element_text(size=40),legend.key.height = unit(80, "pt"))+labs(fill='')
+FineDMR_heatmap(G,K,FD_res$`beta`)
 
 ```
