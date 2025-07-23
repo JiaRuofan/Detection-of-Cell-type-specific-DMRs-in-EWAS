@@ -90,6 +90,22 @@ library(ggsci)
 
 G<-dim(O)[2]
 
-FineDMR_heatmap(G,K,FD_res$`beta`)
+FineDMR_heatmap(G,K,FD_res$`beta`[,2,])
+
+```
+To get the manhatten plot shown as following, one can run the following codes:
+
+ ![manhatten](https://github.com/JiaRuofan/Detection-of-Cell-type-specific-DMRs-in-EWAS/blob/main/simu_manhatten.png?raw=true)
+
+```
+library(ggplot2)
+library(ggsci)
+#Draw a manhatten plot for cell type 1
+#P is a sequence of pvalue, Location is the genomic location, clas corresponds to the significance of P
+Q<-2
+P<-FD_res$`p values`[1,2,]
+Location<-t/0.01#de-normalization
+clas<-p_array_adjust[1,]
+FineDMR_manhatten(P,Location,clas,FWER,G,K,Q)
 
 ```
