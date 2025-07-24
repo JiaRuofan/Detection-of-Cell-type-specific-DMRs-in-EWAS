@@ -152,12 +152,12 @@ And you can also plot the corresponding effect size of $X$.
 You can run the following code to derive the plot:
 
 ```
-rt<-BP[startp:endp]
+
 rmean=FD_res$`beta`[1,2,startp:endp]
 clas<-c()
 
 for (i in 1:bl)
-if (p_array_adjust[1,(startp:endp)[i]]<=0.01){
+if (p_array_adjust[1,(startp:endp)[i]]<=FWER){
   clas[i]<-'risk'
 }else{
   clas[i]<-'non-risk'
