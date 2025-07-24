@@ -145,3 +145,35 @@ ggplot(dat,aes(x=rt,y=rProf,group=X,color=X))+scale_color_npg()+
           legend.text=element_text(size=20),
           legend.title=element_text(size=20))+labs(fill='',x = 'Genomic Location', y = 'Cell-type-specific Profile')
 ```
+And you can also plot the corresponding effect size of $X$.
+
+ ![effect](https://github.com/JiaRuofan/Detection-of-Cell-type-specific-DMRs-in-EWAS/blob/main/simu_effect%20size.png?raw=true)
+
+You can run the following code to derive the plot:
+
+```
+rt<-BP[startp:endp]
+rmean=FD_res$`beta`[1,2,startp:endp]
+clas<-c()
+
+for (i in 1:bl)
+if (p_array_adjust[1,(startp:endp)[i]]<=0.01){
+  clas[i]<-'risk'
+}else{
+  clas[i]<-'non-risk'
+}
+
+dat<-data.frame(t=rt,rmean,clas)
+
+
+ggplot(data = dat, mapping = aes(x = t)) +scale_color_npg()+scale_color_manual(values = c('#F39B7FFF','#91D1C2FF'))+
+  geom_line(mapping = aes(y = rmean, color = clas, group =1),linewidth=1.5)+ 
+  theme_bw() + 
+  theme(legend.position='top', 
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()
+  )+theme(axis.text=element_text(size=20,face = "bold"),axis.title=element_text(size=20,face = "bold"),
+          legend.text=element_text(size=20),
+          legend.title=element_text(size=20))+labs(x = 'Genomic Location', y = 'Effect Size')+ guides(color=guide_legend(title = ""))
+
+```
