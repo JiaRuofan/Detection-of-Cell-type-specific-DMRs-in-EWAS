@@ -41,7 +41,7 @@ $pvalue$: A $K$ by $Q$ by $G$ array containing the p-values estimated from the m
 
 $prop$: The estimated cellular proportions
 
-$M$: An array with dim $K$ by $G$ by $n$ containing the cell-type-specific profiles 
+$profile$: An array with dim $K$ by $G$ by $n$ containing the cell-type-specific profiles 
 
 $DMRs$: A list with length $K$ containing the DMRs detected for each cell type
 
@@ -108,4 +108,40 @@ Location<-t/0.01#de-normalization
 clas<-p_array_adjust[1,]
 FineDMR_manhatten(P,Location,clas,FWER,G,K,Q)
 
+```
+Below shows the scatter plots of subject-specific and cell-type-specific methylation profiles of CpG sites from genomic location 3148005 to 3195414 in cell type 1.
+
+ ![scatter](https://github.com/JiaRuofan/Detection-of-Cell-type-specific-DMRs-in-EWAS/blob/main/simu_scatterplot_smooth.png?raw=true)
+
+You can run the following code to derive the plot:
+```
+n<-300
+startp<-4030
+endp<-4120
+bl<-endp-startp+1
+
+rt<-rep(t[startp:endp],n)#71
+for (i in 1:n){
+  rProf<-c(rProf,as.vector(FD_res$`profile`[1,starp:endp,i]))
+}
+
+rX<-c()
+
+for (i in 1:n){
+  rX<-c(rX,rep(X[i,2],bl))
+}
+
+
+dat<-data.frame(rt,X=as.factor(rX),rProf)
+
+ggplot(dat,aes(x=rt,y=rProf,group=X,color=X))+scale_color_npg()+ 
+  geom_point(size=1)+scale_color_manual(values = c('#4DBBD5FF','#E64B35FF'))+
+  geom_smooth(se=FALSE)+ 
+  theme_bw() + 
+  theme(legend.position='top', 
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()
+  )+theme(axis.text=element_text(size=20,face = "bold"),axis.title=element_text(size=20,face = "bold"),
+          legend.text=element_text(size=20),
+          legend.title=element_text(size=20))+labs(fill='',x = 'Genomic Location', y = 'Cell-type-specific Profile')
 ```
